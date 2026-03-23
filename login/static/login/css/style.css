@@ -1,0 +1,861 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #fff;
+}
+
+
+/* ===============================
+   NAVBAR – LUXURY FLOAT
+================================ */
+
+.navbar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 35px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.logo {
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 4px;
+    font-weight: 500;
+}
+
+.logo span {
+    font-size: 11px;
+    opacity: .75;
+    letter-spacing: 3px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 35px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    position: relative;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0%;
+    height: 1px;
+    background: #c9a44d;
+    transition: .4s;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+
+/* HERO SECTION */
+
+.hero {
+    height: 100vh;
+    background: url("hero.avif") center/cover no-repeat;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.hero-content {
+    position: absolute;
+    bottom: 60px;
+    left: 60px;
+    color: #fff;
+}
+
+.hero-content h1 {
+    font-size: 42px;
+    font-weight: 300;
+    letter-spacing: 3px;
+}
+
+
+/* LUXURY SECTION */
+
+.luxury-section {
+    background: #f6f1eb;
+    padding: 100px 60px;
+    text-align: center;
+}
+
+.luxury-section h2 {
+    font-size: 28px;
+    letter-spacing: 4px;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #2f3e4f;
+}
+
+.luxury-section p {
+    max-width: 800px;
+    margin: 0 auto 60px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #5c6b7a;
+}
+
+
+/* SEARCH BOX */
+
+.search-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.search-box input,
+.search-box select {
+    padding: 18px 20px;
+    border-radius: 50px;
+    border: none;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-box button {
+    grid-column: span 3;
+    padding: 18px;
+    border-radius: 50px;
+    border: none;
+    background: #2f3e4f;
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-box button:hover {
+    background: #1f2a36;
+}
+
+
+/* PROPERTY SECTION */
+
+.property-section {
+    background: #f6f1eb;
+    padding: 60px;
+}
+
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+
+/* PROPERTY CARD */
+
+.property-card {
+    position: relative;
+    height: 340px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.property-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
+
+/* TAG */
+
+.property-card .tag {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    z-index: 2;
+}
+
+
+/* INFO */
+
+.property-info {
+    position: absolute;
+    bottom: 29px;
+    left: 20px;
+    color: #fff;
+    z-index: 2;
+}
+
+.property-info h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+
+.property-info .price {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.property-info .details {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+
+/* ===============================
+   ULTRA LUXURY PROPERTY HOVER
+   =============================== */
+
+.property-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transform: translateZ(0);
+}
+
+
+/* Smooth zoom + lift */
+
+.property-card {
+    transition: transform 0.8s cubic-bezier(.19, 1, .22, 1), box-shadow 0.8s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* IMAGE ZOOM */
+
+.property-card:hover {
+    transform: scale(1.04);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+}
+
+
+/* DARK LUXURY OVERLAY */
+
+.property-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient( to top, rgba(0, 0, 0, 0.85) 15%, rgba(0, 0, 0, 0.25) 50%, transparent 80%);
+    opacity: 0.6;
+    transition: opacity 0.8s ease;
+}
+
+.property-card:hover::after {
+    opacity: 1;
+}
+
+
+/* INFO TEXT ANIMATION */
+
+.property-info {
+    transform: translateY(25px);
+    transition: all 0.8s cubic-bezier(.19, 1, .22, 1);
+}
+
+.property-card:hover .property-info {
+    transform: translateY(0);
+}
+
+
+/* TITLE EFFECT */
+
+.property-info h3 {
+    letter-spacing: 1px;
+    transition: letter-spacing 0.6s ease;
+}
+
+.property-card:hover h3 {
+    letter-spacing: 3px;
+}
+
+
+/* PRICE GLOW */
+
+.property-info .price {
+    opacity: 0.9;
+    transition: opacity 0.6s ease;
+}
+
+.property-card:hover .price {
+    opacity: 1;
+}
+
+
+/* TAG – PREMIUM PILL EFFECT */
+
+.property-card .tag {
+    backdrop-filter: blur(6px);
+    background: rgba(255, 255, 255, 0.85);
+    transition: all 0.6s cubic-bezier(.19, 1, .22, 1);
+}
+
+.property-card:hover .tag {
+    background: rgba(47, 62, 79, 0.95);
+    color: #fff;
+    transform: translateY(-4px);
+}
+
+
+/* SOFT SHINE EFFECT */
+
+.property-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient( 120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: rotate(25deg);
+    transition: all 1s ease;
+    opacity: 0;
+}
+
+.property-card:hover::before {
+    left: 120%;
+    opacity: 1;
+}
+
+
+/* ===============================
+   PREMIUM SEARCH BOX HOVER
+   =============================== */
+
+.search-box input,
+.search-box select,
+.search-box button {
+    transition: transform 0.6s cubic-bezier(.19, 1, .22, 1), box-shadow 0.6s cubic-bezier(.19, 1, .22, 1), background 0.4s ease;
+}
+
+
+/* INPUT & SELECT HOVER */
+
+.search-box input:hover,
+.search-box select:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+}
+
+
+/* BUTTON HOVER – LUXURY FEEL */
+
+.search-box button:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 45px rgba(0, 0, 0, 0.25);
+    background: #243140;
+}
+
+
+/* FOCUS EFFECT (typing ke time bhi premium) */
+
+.search-box input:focus,
+.search-box select:focus {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 45px rgba(0, 0, 0, 0.18);
+}
+
+.search-box button {
+    grid-column: span 3;
+    padding: 18px;
+    border-radius: 50px;
+    border: none;
+    /* Luxury base color */
+    background: linear-gradient(135deg, #2f3e4f, #1f2a36);
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    /* SMOOTH PREMIUM TRANSITION */
+    transition: background 1s cubic-bezier(.19, 1, .22, 1), transform 0.6s cubic-bezier(.19, 1, .22, 1), box-shadow 0.6s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* HOVER – SLOW COLOR CHANGE */
+
+.search-box button:hover {
+    background: linear-gradient(135deg, #426387, #000000);
+    transform: translateY(-8px);
+    box-shadow: 0 22px 45px rgba(255, 208, 0, 0.622);
+}
+
+
+/* ===============================
+   LUXURY VIEW ALL BUTTON
+   =============================== */
+
+.view-all-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 80px 0;
+}
+
+.view-all-btn {
+    padding: 16px 48px;
+    border: 1.5px solid #6b7c8f;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: #2f3e4f;
+    background: transparent;
+    transition: all 0.6s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* HOVER – PREMIUM FADE */
+
+.view-all-btn:hover {
+    background: #2f3e4f;
+    color: #fff;
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ===============================
+   LUXURY HOVER BANNER
+   =============================== */
+
+.luxury-banner {
+    position: relative;
+    height: 420px;
+    background-size: cover;
+    background-position: center;
+    margin: 80px auto;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+
+/* Dark overlay */
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    transition: all 1.2s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* Content */
+
+.banner-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    z-index: 2;
+    transform: translateY(30px);
+    transition: all 1.2s cubic-bezier(.19, 1, .22, 1);
+}
+
+.banner-content h2 {
+    font-size: 34px;
+    letter-spacing: 6px;
+    font-weight: 300;
+    margin-bottom: 15px;
+}
+
+.banner-content p {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+
+/* Button */
+
+.banner-btn {
+    padding: 16px 48px;
+    border: 1.5px solid #fff;
+    border-radius: 50px;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 3px;
+    font-size: 14px;
+    transition: all 0.8s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* ===============================
+   BANNER – FINAL PERFECT LOGIC
+   =============================== */
+
+.luxury-banner {
+    position: relative;
+    height: 420px;
+    margin: 80px auto;
+    background-size: 100%;
+    background-position: center;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background-size 2.5s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* Overlay */
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    transition: background 2s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* CONTENT WRAPPER */
+
+.banner-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    z-index: 2;
+}
+
+
+/* HEADING – ALWAYS VISIBLE */
+
+.banner-content h2 {
+    font-size: 34px;
+    letter-spacing: 6px;
+    font-weight: 300;
+    margin-bottom: 15px;
+}
+
+
+/* LINE + BUTTON – HIDDEN INITIALLY */
+
+.banner-content p,
+.banner-btn {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.9s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* Button base */
+
+.banner-btn {
+    padding: 16px 48px;
+    border: 1.5px solid #fff;
+    border-radius: 50px;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 3px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+
+/* ===============================
+   HOVER – LUXURY REVEAL
+   =============================== */
+
+.luxury-banner:hover {
+    background-size: 108%;
+}
+
+.luxury-banner:hover .banner-overlay {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+
+/* SHOW LINE + BUTTON ON HOVER */
+
+.luxury-banner:hover .banner-content p,
+.luxury-banner:hover .banner-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Button luxury lift */
+
+.luxury-banner:hover .banner-btn {
+    background: #fff;
+    color: #2f3e4f;
+    transform: translateY(-6px);
+}
+
+
+/* ===============================
+   LUXURY NEWSLETTER SECTION
+   =============================== */
+
+.newsletter-section {
+    position: relative;
+    height: 520px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+
+/* Overlay */
+
+.newsletter-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+
+/* Content */
+
+.newsletter-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    text-align: center;
+    padding: 0 20px;
+    color: #fff;
+}
+
+
+/* Heading */
+
+.newsletter-content h2 {
+    font-size: 28px;
+    letter-spacing: 4px;
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+
+/* Form */
+
+.newsletter-form {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+
+/* Inputs */
+
+.newsletter-form input {
+    width: 280px;
+    padding: 16px 22px;
+    border-radius: 50px;
+    border: none;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+}
+
+.newsletter-form input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* Button */
+
+.newsletter-form button {
+    padding: 16px 40px;
+    border-radius: 50px;
+    border: none;
+    background: #fff;
+    color: #2f3e4f;
+    font-size: 14px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(.19, 1, .22, 1);
+}
+
+
+/* Button hover */
+
+.newsletter-form button:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Note text */
+
+.newsletter-note {
+    font-size: 12px;
+    line-height: 1.6;
+    opacity: 0.85;
+    max-width: 800px;
+    margin: auto;
+}
+
+
+/* ===============================
+   LUXURY FOOTER
+   =============================== */
+
+.luxury-footer {
+    background: linear-gradient(180deg, #0f1a24, #0b141c);
+    color: #cfd6dc;
+    padding: 80px 60px 30px;
+    font-size: 14px;
+}
+
+.footer-container {
+    max-width: 1300px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 60px;
+}
+
+
+/* Headings */
+
+.footer-col h4 {
+    color: #ffffff;
+    font-size: 15px;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+
+/* Lists */
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+    color: #b7c0c8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+    color: #ffffff;
+}
+
+
+/* Text */
+
+.footer-text {
+    color: #b7c0c8;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.footer-text a {
+    color: #b7c0c8;
+    text-decoration: none;
+}
+
+.footer-text a:hover {
+    color: #ffffff;
+}
+
+
+/* Social */
+
+.footer-social {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.footer-social a {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 12px;
+    text-decoration: none;
+    transition: all 0.4s ease;
+}
+
+.footer-social a:hover {
+    background: #ffffff;
+    color: #0f1a24;
+}
+
+
+/* Bottom */
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: 60px;
+    padding-top: 20px;
+    text-align: center;
+    color: #9aa4ad;
+    font-size: 13px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+    }
+}
+
+@media (max-width: 500px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.footer-social a i {
+    font-size: 15px;
+}
+
+
+/* Hover refinement */
+
+.footer-social a:hover i {
+    transform: scale(1.1);
+}

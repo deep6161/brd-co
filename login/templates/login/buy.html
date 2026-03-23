@@ -1,0 +1,367 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Properties for Sale | BRD & CO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'login/css/buyers.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="logo">BRD & CO<br><span>REAL ESTATE</span></div>
+
+        <nav>
+            <a href="{% url 'index1' %}">Home</a>
+            <a href="{% url 'sale' %}">Sales</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Media</a>
+            {% if user.is_authenticated %}
+            <div style="position: relative; display: inline-block;">
+                <button onclick="toggleProfileDropdown(event)"
+                    style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px;">👤
+                    {{ user.username }}</button>
+                <div id="profileDropdown"
+                    style="display: none; position: absolute; right: 0; top: 100%; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); min-width: 220px; z-index: 1000; margin-top: 5px;">
+                    <div
+                        style="padding: 12px 16px; border-bottom: 1px solid #eee; background: #f9f9f9; border-radius: 8px 8px 0 0;">
+                        <p style="margin: 0; font-weight: bold; color: #333; font-size: 14px;">{{
+                            user.first_name|default:user.username }}</p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #999;">{{ user.email }}</p>
+                    </div>
+                    <a href="{% url 'profile' %}"
+                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f5f5f5'"
+                        onmouseout="this.style.backgroundColor='transparent'">📋 My Profile</a>
+                    <a href="{% url 'edit_profile' %}"
+                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f5f5f5'"
+                        onmouseout="this.style.backgroundColor='transparent'">✏️ Edit Profile</a>
+                    <a href="{% url 'sale' %}"
+                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f5f5f5'"
+                        onmouseout="this.style.backgroundColor='transparent'">🏠 Post Property</a>
+                    <a href="{% url 'logout' %}"
+                        style="display: block; padding: 10px 16px; color: #ff6b6b; text-decoration: none; font-size: 14px; border-top: 1px solid #eee; transition: 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f5f5f5'"
+                        onmouseout="this.style.backgroundColor='transparent'">🚪 Logout</a>
+                </div>
+            </div>
+            <script>
+                function toggleProfileDropdown(event) {
+                    event.preventDefault();
+                    const dropdown = document.getElementById('profileDropdown');
+                    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+                }
+                document.addEventListener('click', function (event) {
+                    const dropdown = document.getElementById('profileDropdown');
+                    if (!event.target.closest('button') && !event.target.closest('#profileDropdown')) {
+                        dropdown.style.display = 'none';
+                    }
+                });
+            </script>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" style="background-image:url('{% static 'login/image/hero.avif' %}')">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>OUR LISTINGS FOR SALES</h1>
+            <p>View our collection of extraordinary properties.</p>
+        </div>
+    </section>
+
+    <!-- FILTER SECTION -->
+    <section class="filters-section">
+
+        <h2>PROPERTIES RESULTS</h2>
+        <p class="sub-text">Select your filters and click SEARCH</p>
+
+        <div class="filters-box">
+            <input type="text" id="searchInput" placeholder="Search by city">
+
+            <select id="locationFilter">
+                <option value="">Location</option>
+                {% for location in available_locations %}
+                <option value="{{ location }}">{{ location }}</option>
+                {% endfor %}
+            </select>
+
+            <select id="propertyTypeFilter">
+                <option value="">Property type</option>
+                <option value="apartment">Apartment</option>
+                <option value="villa">Villa</option>
+                <option value="plot">Plot / Land</option>
+            </select>
+
+            <select id="bedroomFilter">
+                <option value="">Bedroom</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3+">3+</option>
+            </select>
+
+            <select id="bathroomFilter">
+                <option value="">Bathroom</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3+">3+</option>
+            </select>
+
+            <select id="priceFilter">
+                <option value="">Price range</option>
+                <option value="5000000-10000000">₹50L – ₹1Cr</option>
+                <option value="10000000">₹1Cr+</option>
+            </select>
+
+            <button class="reset-btn" onclick="resetFilters()">RESET</button>
+            <button class="reset-btn" style="background: #c9a24d; margin-left: 10px;grid-column: span 4 ;padding: 20px ;"
+                onclick="applyFilters()">SEARCH</button>
+        </div>
+    </section>
+
+    <!-- CATEGORY SLIDER -->
+    <section class="category-section">
+        <div class="section-head">
+            <h2>Apartments, Villas and more</h2>
+            <p>Explore by Category</p>
+        </div>
+
+        <div class="slider-wrapper">
+
+            <button class="nav-btn left" onclick="slideLeft()">&#10094;</button>
+
+            <div class="slider">
+                <div class="card beige" onclick="filterByType('apartment')">
+                    <h3>Residential<br>Apartment</h3>
+                    <span>17,000+ Properties</span>
+                    <img src="{% static 'login/image/apartment.webp' %}">
+                </div>
+
+                <div class="card blue" onclick="filterByType('villa')">
+                    <h3>Independent<br>House / Villa</h3>
+                    <span>340+ Properties</span>
+                    <img src="{% static 'login/image/villa.webp' %}">
+                </div>
+
+                <div class="card green" onclick="filterByType('villa')">
+                    <h3>Independent /<br>Builder Floor</h3>
+                    <span>250+ Properties</span>
+                    <img src="{% static 'login/image/builder.webp' %}">
+                </div>
+
+                <div class="card beige" onclick="filterByType('plot')">
+                    <h3>Plots / Land</h3>
+                    <span>120+ Properties</span>
+                    <img src="{% static 'login/image/plot.jpg' %}">
+                </div>
+            </div>
+
+            <button class="nav-btn right" onclick="slideRight()">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- AVAILABLE PROPERTIES -->
+    <section class="properties-section">
+        <h2>🏠 Available Properties</h2>
+
+        {% if properties %}
+        <div class="properties-grid">
+            {% for property in properties %}
+            <a href="{% url 'property_detail' property.id %}" class="property-card-link">
+                <div class="property-card">
+                    <div class="property-card-image" style="padding: 0; overflow: hidden;">
+                        {% if property.images.first %}
+                        <img src="{{ property.images.first.image.url }}" alt="{{ property.location }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                {% if property.property_type == 'apartment' %}
+                                🏢
+                                {% elif property.property_type == 'villa' %}
+                                🏡
+                                {% else %}
+                                📍
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="property-card-details">
+                        <span class="property-card-tag">{{ property.get_property_type_display }}</span>
+                        <h3>{{ property.location }}</h3>
+                        <p>{{ property.description|truncatewords:15 }}</p>
+
+                        <div class="property-card-meta">
+                            <span><i class="fas fa-bed"></i> {{ property.bedrooms }} BHK</span>
+                            <span><i class="fas fa-bath"></i> {{ property.bathrooms }} Bath</span>
+                        </div>
+
+                        <div class="property-card-price-row">
+                            <span class="property-card-price">₹{{ property.price|floatformat:0 }}</span>
+                            <span class="property-card-badge">✓ Available</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-properties">
+            <i class="fas fa-inbox"></i>
+            <p>No properties available at the moment.</p>
+            <p>New listings are coming soon!</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="luxury-footer">
+        <div class="footer-container">
+
+            <!-- COLUMN 1 -->
+            <div class="footer-col">
+                <h4>BRD & CO</h4>
+                <ul>
+                    <li><a href="#">Mobile Apps</a></li>
+                    <li><a href="#">Our Services</a></li>
+                    <li><a href="#">Price Trends</a></li>
+                    <li><a href="#">Post your Property</a></li>
+                    <li><a href="#">Real Estate Investments</a></li>
+                    <li><a href="#">Builders in India</a></li>
+                    <li><a href="#">Articles</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUMN 2 -->
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                    <li><a href="#">Safety Guide</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUMN 3 -->
+            <div class="footer-col">
+                <h4>Our Partners</h4>
+                <ul>
+                    <li><a href="#">Naukri.com</a></li>
+                    <li><a href="#">99acres Gulf</a></li>
+                    <li><a href="#">Jeevansathi</a></li>
+                    <li><a href="#">Policybazaar</a></li>
+                    <li><a href="#">Paisabazaar</a></li>
+                    <li><a href="#">AmbitionBox</a></li>
+                    <li><a href="#">Techminis</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUMN 4 -->
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p class="footer-text">
+                    Toll Free: <strong>1800 41 99099</strong><br>
+                    9:30 AM – 6:30 PM (Mon–Sun)
+                </p>
+                <p class="footer-text">
+                    Email: <a href="mailto:info@brdco.com">info@brdco.com</a>
+                </p>
+                <h4>Connect with us</h4>
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 BRD & CO. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script>
+        function filterByType(type) {
+            // Set the property type filter and apply
+            document.getElementById('propertyTypeFilter').value = type;
+            applyFilters();
+        }
+
+        // Filter functionality
+        function applyFilters() {
+            const location = document.getElementById('locationFilter').value;
+            const propertyType = document.getElementById('propertyTypeFilter').value;
+            const bedroom = document.getElementById('bedroomFilter').value;
+            const bathroom = document.getElementById('bathroomFilter').value;
+            const priceRange = document.getElementById('priceFilter').value;
+            const search = document.getElementById('searchInput').value;
+
+            // Build URL with query parameters
+            let url = '{% url "buy" %}?';
+
+            if (location) url += `location=${encodeURIComponent(location)}&`;
+            if (propertyType) url += `type=${encodeURIComponent(propertyType)}&`;
+            if (bedroom) url += `bedrooms=${encodeURIComponent(bedroom)}&`;
+            if (bathroom) url += `bathrooms=${encodeURIComponent(bathroom)}&`;
+            if (priceRange) {
+                const [min, max] = priceRange.split('-');
+                if (min) url += `min_price=${min}&`;
+                if (max) url += `max_price=${max}&`;
+            }
+            if (search) url += `search=${encodeURIComponent(search)}&`;
+
+            // Remove trailing &
+            url = url.replace(/&$/, '');
+
+            // Navigate to filtered URL
+            window.location.href = url;
+        }
+
+        function resetFilters() {
+            document.getElementById('locationFilter').value = '';
+            document.getElementById('propertyTypeFilter').value = '';
+            document.getElementById('bedroomFilter').value = '';
+            document.getElementById('bathroomFilter').value = '';
+            document.getElementById('priceFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            window.location.href = '{% url "buy" %}';
+        }
+
+        // Slider functionality
+        function slideLeft() {
+            const slider = document.querySelector('.slider');
+            slider.scrollBy({
+                left: -300,
+                behavior: 'smooth'
+            });
+        }
+
+        function slideRight() {
+            const slider = document.querySelector('.slider');
+            slider.scrollBy({
+                left: 300,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+
+</html>

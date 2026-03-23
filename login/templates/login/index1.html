@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Luxury Real Estate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="logo">REAL ESTATE<br><span>B R D & co</span></div>
+
+        <nav>
+            <a href="{% url 'buy' %}">Buy</a>
+            <a href="{% url 'sale' %}">Sales</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Media</a>
+            {% if user.is_authenticated %}
+            <div style="position: relative; display: inline-block;">
+                <button onclick="toggleProfileDropdown(event)"
+                    style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px;">👤
+                    {{ user.username }}</button>
+                <div id="profileDropdown"
+                    style="display: none; position: absolute; right: 0; top: 100%; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); min-width: 220px; z-index: 1000; margin-top: 5px;">
+                    <div
+                        style="padding: 12px 16px; border-bottom: 1px solid #eee; background: #f9f9f9; border-radius: 8px 8px 0 0;">
+                        <p style="margin: 0; font-weight: bold; color: #333; font-size: 14px;">{{ user.first_name|default:user.username }}</p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #999;">{{ user.email }}</p>
+                    </div>
+                    <a href="{% url 'profile' %}"
+                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f5f5f5'"
+                        onmouseout="this.style.backgroundColor='transparent'">📋 My Profile</a>
+                    <a href="{% url 'edit_profile' %}"
+                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f5f5f5'"
+                        onmouseout="this.style.backgroundColor='transparent'">✏️ Edit Profile</a>
+                    <a href="{% url 'sale' %}"
+                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f5f5f5'"
+                        onmouseout="this.style.backgroundColor='transparent'">🏠 Post Property</a>
+                    <a href="{% url 'logout' %}"
+                        style="display: block; padding: 10px 16px; color: #ff6b6b; text-decoration: none; font-size: 14px; border-top: 1px solid #eee; transition: 0.2s;"
+                        onmouseover="this.style.backgroundColor='#f5f5f5'"
+                        onmouseout="this.style.backgroundColor='transparent'">🚪 Logout</a>
+                </div>
+            </div>
+            <script>
+                function toggleProfileDropdown(event) {
+                    event.preventDefault();
+                    const dropdown = document.getElementById('profileDropdown');
+                    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+                }
+                document.addEventListener('click', function (event) {
+                    const dropdown = document.getElementById('profileDropdown');
+                    if (!event.target.closest('button') && !event.target.closest('#profileDropdown')) {
+                        dropdown.style.display = 'none';
+                    }
+                });
+            </script>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" style="background-image:url('{% static 'login/image/hero.avif' %}')">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Selling Luxury Property in World</h1>
+        </div>
+    </section>
+
+
+
+    <!-- PROPERTY LISTING -->
+    <section class="property-section">
+        <div class="property-grid">
+
+            {% for property in properties %}
+            <a href="{% url 'property_detail' property.id %}" style="text-decoration: none; color: inherit; display: block;">
+                <div class="property-card" 
+                     {% if property.images.first %}
+                     style="background-image:url('{{ property.images.first.image.url }}')"
+                     {% else %}
+                     style="background-color: #c9a24d; display: flex; align-items: center; justify-content: center;"
+                     {% endif %}>
+                    
+                    {% if not property.images.first %}
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                        {% if property.property_type == 'apartment' %}🏢
+                        {% elif property.property_type == 'villa' %}🏡
+                        {% else %}📍{% endif %}
+                    </div>
+                    {% endif %}
+
+                    <span class="tag" style="position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.95); padding: 8px 16px; border-radius: 20px; font-weight: 600; color: #2f3e4f; z-index: 3; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">{{ property.get_property_type_display }}</span>
+                    <div class="property-info">
+                        <h3 style="font-size: 24px; font-weight: 600; text-shadow: 1px 1px 4px rgba(0,0,0,0.9);">{{ property.location|truncatechars:25 }} · {{ property.bedrooms }} BHK</h3>
+                        <p class="price" style="font-size: 20px; color: #c9a44d; font-weight: bold; margin: 8px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">INR {{ property.price|floatformat:0 }}</p>
+                        <p class="details" style="font-size: 14px; color: #f0f0f0; letter-spacing: 0.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
+                            <i class="fas fa-bed"></i> {{ property.bedrooms }} Bedrooms &nbsp;|&nbsp; 
+                            <i class="fas fa-bath"></i> {{ property.bathrooms }} Bathrooms
+                        </p>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #666; font-size: 1.2rem;">
+                    <p>No properties available currently.</p>
+                </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+    <!-- BANNERS -->
+    <section class="luxury-banner" style="background-image:url('{% static 'login/image/banner1.avif' %}')">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+            <h2>ABOUT INDIA</h2>
+            <p>Everything you wanted to know about living in India.</p>
+            <a href="#" class="banner-btn">DISCOVER</a>
+        </div>
+    </section>
+
+    <section class="luxury-banner" style="background-image:url('{% static 'login/image/banner2.jpg' %}')">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+            <h2>FOR BUYERS</h2>
+            <p>Discover the ultimate guide to buying property in India.</p>
+            <a href="{% url 'buy' %}" class="banner-btn">FIND OUT MORE</a>
+        </div>
+    </section>
+
+    <section class="luxury-banner" style="background-image:url('{% static 'login/image/banner1.avif' %}')">
+        <div class="banner-overlay"></div>
+
+        <div class="banner-content">
+            <h2>FOR SELLER</h2>
+            <p>Discover the ultimate guide to selling property in India.</p>
+            <a href="{% url 'sale' %}" class="banner-btn">SELL YOUR HOUSE</a>
+        </div>
+    </section>
+
+
+
+
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter-section" style="background-image:url('{% static 'login/image/newsletter.jpeg' %}')">
+        <div class="newsletter-overlay"></div>
+        <div class="newsletter-content">
+            <h2>
+                KEEP YOURSELF UPDATED ON THE<br>
+                LATEST LUXURY PROPERTY AVAILABLE
+            </h2>
+
+            <form class="newsletter-form">
+                <input type="text" placeholder="Name*" required>
+                <input type="email" placeholder="Email*" required>
+                <button type="submit">SIGN UP</button>
+            </form>
+
+            <p class="newsletter-note">
+                By providing your contact information, you agree to receive marketing communications.
+            </p>
+        </div>
+    </section>
+
+    {% load static %}
+
+    <!-- FOOTER -->
+    <footer class="luxury-footer">
+
+        <div class="footer-container">
+
+            <!-- COLUMN 1 -->
+            <div class="footer-col">
+                <h4>BRD & CO</h4>
+                <ul>
+                    <li><a href="#">Mobile Apps</a></li>
+                    <li><a href="#">Our Services</a></li>
+                    <li><a href="#">Price Trends</a></li>
+                    <li><a href="#">Post your Property</a></li>
+                    <li><a href="#">Real Estate Investments</a></li>
+                    <li><a href="#">Builders in India</a></li>
+                    <li><a href="#">Articles</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUMN 2 -->
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                    <li><a href="#">Safety Guide</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUMN 3 -->
+            <div class="footer-col">
+                <h4>Our Partners</h4>
+                <ul>
+                    <li><a href="#">Naukri.com</a></li>
+                    <li><a href="#">99acres Gulf</a></li>
+                    <li><a href="#">Jeevansathi</a></li>
+                    <li><a href="#">Policybazaar</a></li>
+                    <li><a href="#">Paisabazaar</a></li>
+                    <li><a href="#">AmbitionBox</a></li>
+                    <li><a href="#">Techminis</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUMN 4 -->
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+
+                <p class="footer-text">
+                    Toll Free: <strong>1800 41 99099</strong><br>
+                    9:30 AM – 6:30 PM (Mon–Sun)
+                </p>
+
+                <p class="footer-text">
+                    Email:
+                    <a href="mailto:info@brdco.com">info@brdco.com</a>
+                </p>
+
+                <h4>Connect with us</h4>
+                <div class="footer-social">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BOTTOM LINE -->
+        <div class="footer-bottom">
+            © 2026 BRD & CO. All Rights Reserved.
+        </div>
+
+    </footer>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+    <!-- GEOLOCATION SCRIPT -->
+    <script>
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+        function success(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                .then(res => res.json())
+                .then(data => {
+                    const place =
+                        data.address.city ||
+                        data.address.town ||
+                        data.address.village ||
+                        data.address.state ||
+                        "";
+
+                    const select = document.getElementById("locationSelect");
+
+                    for (let opt of select.options) {
+                        if (place.toLowerCase().includes(opt.text.toLowerCase())) {
+                            opt.selected = true;
+                            return;
+                        }
+                    }
+                });
+        }
+
+        function error() {
+            console.log("Location permission denied");
+        }
+    </script>
+
+</body>
+
+</html>
