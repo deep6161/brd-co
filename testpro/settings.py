@@ -26,10 +26,12 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+# Allowed hosts from environment, plus Render default
+raw_hosts = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,brd-co.onrender.com")
+ALLOWED_HOSTS = [host.strip() for host in raw_hosts.split(",") if host.strip()]
 
-CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
-CSRF_TRUSTED_ORIGINS = [origin for origin in CSRF_TRUSTED_ORIGINS if origin]
+raw_csrf = os.environ.get("CSRF_TRUSTED_ORIGINS", "https://brd-co.onrender.com")
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in raw_csrf.split(",") if origin.strip()]
 
 
 # ---------- APPS ----------
