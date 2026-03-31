@@ -19,19 +19,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # ---------- SECURITY ----------
-# Read from environment variable, fall back to insecure key for local dev only
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
     "django-insecure-qd)sr+2b&iav)(+w*&)a+=+f%#tsapoz%)5^w8ih4$w4amw3%&"
 )
 
-# Set DEBUG from environment (default False in production)
 DEBUG = os.environ.get("DEBUG", "False").lower() in ("true", "1", "yes")
 
-# Allowed hosts from environment
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
-# CSRF trusted origins for Render / custom domains
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
 CSRF_TRUSTED_ORIGINS = [origin for origin in CSRF_TRUSTED_ORIGINS if origin]
 
@@ -83,7 +79,6 @@ WSGI_APPLICATION = "testpro.wsgi.application"
 
 
 # ---------- DATABASE ----------
-# Use PostgreSQL in production (from DATABASE_URL env var), SQLite locally
 if os.environ.get("DATABASE_URL"):
     DATABASES = {
         "default": dj_database_url.config(

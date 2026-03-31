@@ -1,0 +1,32 @@
+databases:
+  - name: brdco-db
+    plan: free
+    databaseName: brdco
+    user: brdco_user
+
+services:
+  - type: web
+    name: brd-co
+    plan: free
+    runtime: python
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py create_admin"
+    startCommand: "gunicorn testpro.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: brdco-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: "admin"
+      - key: DJANGO_SUPERUSER_EMAIL
+        value: "admin@brdco.com"
+      - key: DJANGO_SUPERUSER_PASSWORD
+        value: "Admin@123"
