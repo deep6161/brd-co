@@ -9,7 +9,7 @@ services:
     name: brd-co
     plan: free
     runtime: python
-    buildCommand: "./build.sh"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py create_admin"
     startCommand: "gunicorn testpro.wsgi:application"
     envVars:
       - key: DATABASE_URL
@@ -24,3 +24,9 @@ services:
         value: ".onrender.com"
       - key: PYTHON_VERSION
         value: "3.12.0"
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: "admin"
+      - key: DJANGO_SUPERUSER_EMAIL
+        value: "admin@brdco.com"
+      - key: DJANGO_SUPERUSER_PASSWORD
+        value: "Admin@123"
