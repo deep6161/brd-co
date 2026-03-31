@@ -798,22 +798,13 @@ nav a:hover::after {
 
 .footer-social {
     display: flex;
-    gap: 12px;
-    margin-top: 10px;
+    gap: 15px;
 }
 
 .footer-social a {
-    width: 36px;
-    height: 36px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-size: 12px;
-    text-decoration: none;
-    transition: all 0.4s ease;
+    color: #fff;
+    font-size: 18px;
+    transition: 0.3s;
 }
 
 .footer-social a:hover {

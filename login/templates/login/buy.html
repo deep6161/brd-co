@@ -68,6 +68,9 @@
                     }
                 });
             </script>
+            {% else %}
+            <a href="{% url 'login' %}?next={{ request.path }}" style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Login</a>
+            <a href="{% url 'register' %}?next={{ request.path }}" style="background: #333; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Register</a>
             {% endif %}
         </nav>
     </header>

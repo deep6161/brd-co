@@ -19,6 +19,9 @@ def login_view(request):
             user = form.get_user()
             login(request, user)  # Create session
             messages.success(request, f'Welcome back, {user.username}! ✅')
+            next_url = request.GET.get('next') or request.POST.get('next')
+            if next_url:
+                return redirect(next_url)
             return redirect('index1')
         else:
             messages.error(request, 'Invalid username or password. ❌')
@@ -57,7 +60,6 @@ def register_view(request):
     return render(request, 'login/loginpage.html', {'form': form, 'register_form': True})
 
 
-@login_required(login_url='login')
 def index1(request):
     """Display home page - requires login"""
     # Get featured properties
@@ -98,7 +100,6 @@ def sale(request):
 
 
 
-@login_required(login_url='login')
 def buy(request):
     """Display properties for purchase - requires login"""
     properties = Property.objects.filter(is_available=True)
@@ -186,7 +187,6 @@ def edit_profile_view(request):
     return render(request, 'login/edit_profile.html', {'user': request.user})
 
 
-@login_required(login_url='login')
 def property_detail_view(request, property_id):
     """Display detailed view of a single property"""
     try:
