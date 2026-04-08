@@ -955,14 +955,8 @@
         {% endfor %}
     </div>
     {% endif %}
-    <div class="form-box">
-        <h2>Post Property For Sale</h2>
-
-        <form method="post" enctype="multipart/form-data" id="propertyForm">
-            {% csrf_token %}
-
-        <!-- SELLER NAME -->
-        <header class="navbar">
+    <!-- Navigation Header -->
+    <header class="navbar" style="position: relative; z-index: 1000; width: 100%;">
         <div class="logo">BRD & CO<br><span>REAL ESTATE</span></div>
         <nav>
             <a href="{% url 'index1' %}">Home</a>
@@ -1003,6 +997,14 @@
             {% endif %}
         </nav>
     </header>
+
+    <div class="form-box">
+        <h2>Post Property For Sale</h2>
+
+        <form method="post" enctype="multipart/form-data" id="propertyForm">
+            {% csrf_token %}
+
+        <!-- SELLER NAME -->
 
         <div class="name-row reveal">
             <div class="field">
