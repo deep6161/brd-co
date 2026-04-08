@@ -11,6 +11,7 @@ mkdir -p staticfiles_build/static
 cp -r staticfiles/* staticfiles_build/static/
 
 # Run migrations
+python manage.py makemigrations --no-input
 python manage.py migrate --no-input
 
 # Create superuser if env vars are set
