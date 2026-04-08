@@ -211,6 +211,13 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 16px rgba(201, 162, 77, 0.3);
         }
+        @media (max-width: 600px) {
+            .profile-info { flex-direction: column; text-align: center; gap: 20px; }
+            .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .navbar nav { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
+            .navbar nav a { margin-left: 10px; margin-right: 10px; font-size: 12px; }
+            .profile-container { margin-top: 140px; }
+        }
     </style>
 </head>
 

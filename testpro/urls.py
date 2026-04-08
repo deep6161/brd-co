@@ -26,8 +26,8 @@ urlpatterns = [
     path("login/", include("login.urls")),
     path("location/", include("location.urls")),
 
-    # ROOT URL - redirect to login
-    path("", lambda request: redirect("login")),
+    # ROOT URL - redirect to index1 for public browsing
+    path("", lambda request: redirect("index1")),
 ]
 
 # Serve media files in development

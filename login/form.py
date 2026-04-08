@@ -62,7 +62,7 @@ class PropertyForm(forms.ModelForm):
         model = Property
         fields = [
             'seller_first_name', 'seller_last_name', 'seller_email', 'seller_phone',
-            'property_type', 'location', 'price', 'bedrooms', 'bathrooms', 'description'
+            'property_type', 'location', 'latitude', 'longitude', 'price', 'bedrooms', 'bathrooms', 'description'
         ]
         widgets = {
             'seller_first_name': forms.TextInput(attrs={
@@ -90,9 +90,12 @@ class PropertyForm(forms.ModelForm):
             }),
             'location': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'City, Area',
-                'required': True
+                'placeholder': 'City, Area (Search or pin on map)',
+                'required': True,
+                'id': 'location_input'
             }),
+            'latitude': forms.HiddenInput(attrs={'id': 'id_latitude'}),
+            'longitude': forms.HiddenInput(attrs={'id': 'id_longitude'}),
             'price': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Price (₹)',

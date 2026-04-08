@@ -58,8 +58,9 @@
 
         .container {
             position: relative;
-            width: 850px;
-            height: 550px;
+            width: 100%;
+            max-width: 850px;
+            min-height: 550px;
             margin-top: 220px;
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(14px);
@@ -272,10 +273,29 @@
    RESPONSIVE
 ========================= */
 
-        @media(max-width:650px) {
+        @media(max-width: 768px) {
             .container {
-                height: calc(100vh - 40px);
+                height: auto;
+                min-height: calc(100vh - 40px);
+                display: flex;
+                flex-direction: column;
+                margin-top: 120px;
             }
+            .form-box {
+                position: relative;
+                width: 100%;
+                visibility: visible !important;
+                height: auto;
+                padding: 40px 20px;
+                right: auto !important;
+            }
+            .form-box.login { border-bottom: 2px solid #e2ddd6; }
+            .toggle-box { display: none; }
+            .title-top { font-size: 80px; top: 10px; }
+        }
+
+        @media(max-width:650px) {
+            .title-top { font-size: 60px; }
         }
 
         .handwriting {

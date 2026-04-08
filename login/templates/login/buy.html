@@ -10,6 +10,10 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'login/css/buyers.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- LEAFLET -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -176,7 +180,10 @@
 
     <!-- AVAILABLE PROPERTIES -->
     <section class="properties-section">
-        <h2>🏠 Available Properties</h2>
+        <h2>🏠 Discover Properties on Map</h2>
+        <div id="buyer-map" style="height: 450px; width: 100%; max-width: 1300px; margin: 0 auto 50px auto; border-radius: 20px; z-index: 1; border: 2px solid #e5ded4; box-shadow: 0 10px 30px rgba(0,0,0,0.05);"></div>
+
+        <h2>📜 All Available Properties</h2>
 
         {% if properties %}
         <div class="properties-grid">
@@ -301,6 +308,51 @@
 
     <!-- JS -->
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mapProperties = [
+                {% for p in properties %}
+                    {% if p.latitude and p.longitude %}
+                    {
+                        id: {{ p.id }},
+                        title: "{{ p.location|escapejs }}",
+                        lat: {{ p.latitude }},
+                        lng: {{ p.longitude }},
+                        price: "{{ p.price|floatformat:0 }}",
+                        type: "{{ p.get_property_type_display|escapejs }}",
+                        url: "{% url 'property_detail' p.id %}"
+                    },
+                    {% endif %}
+                {% endfor %}
+            ];
+
+            const mapContainer = document.getElementById('buyer-map');
+            if (mapProperties.length > 0) {
+                const map = L.map('buyer-map');
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+
+                const bounds = [];
+                mapProperties.forEach(p => {
+                    const marker = L.marker([p.lat, p.lng]).addTo(map);
+                    marker.bindPopup(`
+                        <div style="font-family: Poppins, sans-serif; text-align: left;">
+                            <h4 style="margin: 0 0 5px 0; font-size: 16px; color: #333;">${p.type}</h4>
+                            <p style="margin: 0 0 10px 0; color: #666; font-size: 13px;">${p.title}</p>
+                            <strong style="color: #c9a24d; font-size: 15px;">₹${p.price}</strong>
+                            <br>
+                            <a href="${p.url}" style="display: inline-block; margin-top: 10px; color: #fff; background: #c9a24d; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px;">View Details</a>
+                        </div>
+                    `);
+                    bounds.push([p.lat, p.lng]);
+                });
+                map.fitBounds(bounds, {padding: [50, 50]});
+            } else {
+                mapContainer.style.display = 'none';
+            }
+        });
+
         function filterByType(type) {
             // Set the property type filter and apply
             document.getElementById('propertyTypeFilter').value = type;

@@ -31,6 +31,8 @@ class Property(models.Model):
     # Property Details
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPE_CHOICES)
     location = models.CharField(max_length=255)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     price = models.DecimalField(max_digits=15, decimal_places=2)
     bedrooms = models.CharField(max_length=10, choices=BEDROOM_CHOICES)
     bathrooms = models.CharField(max_length=10, choices=BATHROOM_CHOICES)
