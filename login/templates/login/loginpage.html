@@ -276,30 +276,53 @@
         @media(max-width: 768px) {
             .container {
                 height: auto;
-                min-height: calc(100vh - 40px);
-                display: flex;
-                flex-direction: column;
-                margin-top: 120px;
+                min-height: auto;
+                margin: 100px 16px 30px;
+                border-radius: 20px;
+                width: calc(100% - 32px);
             }
             .form-box {
                 position: relative;
                 width: 100%;
-                visibility: visible !important;
                 height: auto;
-                padding: 40px 20px;
+                padding: 36px 24px;
                 right: auto !important;
             }
-            .form-box.login { border-bottom: 2px solid #e2ddd6; }
+            /* On mobile: only show one form at a time */
+            .form-box.register {
+                display: none;
+                visibility: visible !important;
+            }
+            .container.active .form-box.login {
+                display: none;
+            }
+            .container.active .form-box.register {
+                display: flex;
+            }
             .toggle-box { display: none; }
-            .title-top { font-size: 80px; top: 10px; }
+            .title-top { font-size: 72px; top: 8px; }
+            /* Mobile toggle links shown inside forms */
+            .mobile-toggle-link {
+                display: block !important;
+            }
         }
 
-        @media(max-width:650px) {
-            .title-top { font-size: 60px; }
+        @media(max-width: 480px) {
+            .title-top { font-size: 52px; }
         }
 
-        .handwriting {
-            font-family: 'Great Vibes', cursive;
+        /* Mobile toggle link - hidden on desktop, shown on mobile */
+        .mobile-toggle-link {
+            display: none;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+        .mobile-toggle-link a {
+            color: #c9a24d;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
         }
 
         .title-top {
@@ -315,6 +338,8 @@
             transform: translateY(-30px) scale(0.95);
             animation: titleReveal 1.6s ease forwards;
         }
+
+        .handwriting { font-family: 'Great Vibes', cursive; }
 
         /* subtle gold shine */
 
@@ -377,8 +402,9 @@
                 </div>
 
                 <button type="submit" class="btn">Login</button>
+                <!-- Mobile only: link to register -->
+                <p class="mobile-toggle-link">Don't have an account? <a onclick="document.querySelector('.container').classList.add('active')">Register</a></p>
             </form>
-
         </div>
 
 
@@ -407,9 +433,9 @@
                 </div>
 
                 <button type="submit" class="btn">Register</button>
+                <!-- Mobile only: link to login -->
+                <p class="mobile-toggle-link">Already have an account? <a onclick="document.querySelector('.container').classList.remove('active')">Login</a></p>
             </form>
-
-
         </div>
 
         <!-- TOGGLE -->

@@ -26,33 +26,32 @@
             <a href="#">Contact</a>
             <a href="#">Media</a>
             {% if user.is_authenticated %}
-            <div style="position: relative; display: inline-block;">
-                <button onclick="toggleProfileDropdown(event)"
-                    style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px;">👤
-                    {{ user.username }}</button>
+            <!-- Desktop: dropdown button | Mobile: inline links -->
+            <div class="profile-nav-wrap" style="position: relative;">
+                <!-- Desktop dropdown button (hidden on mobile via CSS) -->
+                <button id="profileBtn" onclick="toggleProfileDropdown(event)" class="profile-nav-btn"
+                    style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px;">
+                    👤 {{ user.username }}
+                </button>
                 <div id="profileDropdown"
-                    style="display: none; position: absolute; right: 0; top: 100%; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); min-width: 220px; z-index: 1000; margin-top: 5px;">
+                    style="display: none; position: absolute; left: 0; top: 100%; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); min-width: 220px; z-index: 1000; margin-top: 5px;">
                     <div style="padding: 12px 16px; border-bottom: 1px solid #eee; background: #f9f9f9; border-radius: 8px 8px 0 0;">
                         <p style="margin: 0; font-weight: bold; color: #333; font-size: 14px;">{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</p>
                         <p style="margin: 5px 0 0 0; font-size: 12px; color: #999;">{{ user.email }}</p>
                     </div>
-                    <a href="{% url 'profile' %}"
-                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
-                        onmouseover="this.style.backgroundColor='#f5f5f5'"
-                        onmouseout="this.style.backgroundColor='transparent'">📋 My Profile</a>
-                    <a href="{% url 'edit_profile' %}"
-                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
-                        onmouseover="this.style.backgroundColor='#f5f5f5'"
-                        onmouseout="this.style.backgroundColor='transparent'">✏️ Edit Profile</a>
-                    <a href="{% url 'sale' %}"
-                        style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; transition: 0.2s;"
-                        onmouseover="this.style.backgroundColor='#f5f5f5'"
-                        onmouseout="this.style.backgroundColor='transparent'">🏠 Post Property</a>
-                    <a href="{% url 'logout' %}"
-                        style="display: block; padding: 10px 16px; color: #ff6b6b; text-decoration: none; font-size: 14px; border-top: 1px solid #eee; transition: 0.2s;"
-                        onmouseover="this.style.backgroundColor='#f5f5f5'"
-                        onmouseout="this.style.backgroundColor='transparent'">🚪 Logout</a>
+                    <a href="{% url 'profile' %}" style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px;" onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='transparent'">📋 My Profile</a>
+                    <a href="{% url 'edit_profile' %}" style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px;" onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='transparent'">✏️ Edit Profile</a>
+                    <a href="{% url 'sale' %}" style="display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px;" onmouseover="this.style.backgroundColor='#f5f5f5'" onmouseout="this.style.backgroundColor='transparent'">🏠 Post Property</a>
+                    <a href="{% url 'logout' %}" style="display: block; padding: 10px 16px; color: #ff6b6b; text-decoration: none; font-size: 14px; border-top: 1px solid #eee;">🚪 Logout</a>
                 </div>
+            </div>
+            <!-- Mobile inline profile links (shown only on mobile via CSS) -->
+            <div class="mobile-profile-links">
+                <span style="display: block; padding: 10px 0; color: #c9a24d; font-weight: 600; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.1);">👤 {{ user.username }}</span>
+                <a href="{% url 'profile' %}" style="display: block; padding: 10px 0; color: #fff; text-decoration: none; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.08);">📋 My Profile</a>
+                <a href="{% url 'edit_profile' %}" style="display: block; padding: 10px 0; color: #fff; text-decoration: none; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.08);">✏️ Edit Profile</a>
+                <a href="{% url 'sale' %}" style="display: block; padding: 10px 0; color: #fff; text-decoration: none; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.08);">🏠 Post Property</a>
+                <a href="{% url 'logout' %}" style="display: block; padding: 10px 0; color: #ff6b6b; text-decoration: none; font-size: 14px;">🚪 Logout</a>
             </div>
             <script>
                 function toggleProfileDropdown(event) {
@@ -62,16 +61,14 @@
                 }
                 document.addEventListener('click', function (event) {
                     const dropdown = document.getElementById('profileDropdown');
-                    if (!event.target.closest('button') && !event.target.closest('#profileDropdown')) {
+                    if (dropdown && !event.target.closest('.profile-nav-wrap')) {
                         dropdown.style.display = 'none';
                     }
                 });
             </script>
             {% else %}
-            <a href="{% url 'login' %}?next={{ request.path }}"
-                style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Login</a>
-            <a href="{% url 'register' %}?next={{ request.path }}"
-                style="background: #333; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Register</a>
+            <a href="{% url 'login' %}?next={{ request.path }}" style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Login</a>
+            <a href="{% url 'register' %}?next={{ request.path }}" style="background: #333; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Register</a>
             {% endif %}
         </nav>
     </header>

@@ -1031,3 +1031,31 @@ nav a:hover::after {
         font-size: 18px;
     }
 }
+
+/* ===============================
+   PROFILE NAV – DESKTOP vs MOBILE
+   =============================== */
+
+/* Desktop: show dropdown button, hide inline links */
+.mobile-profile-links {
+    display: none;
+}
+.profile-nav-wrap {
+    display: inline-block;
+}
+
+/* Mobile: hide dropdown button, show inline links */
+@media (max-width: 900px) {
+    .profile-nav-wrap {
+        display: none !important;
+    }
+    .mobile-profile-links {
+        display: block !important;
+        width: 100%;
+    }
+    .mobile-profile-links a,
+    .mobile-profile-links span {
+        width: 100%;
+        letter-spacing: 0.5px;
+    }
+}
