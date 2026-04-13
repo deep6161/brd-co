@@ -303,62 +303,139 @@
             display: inline-block;
         }
 
+        /* Property detail navbar mobile */
         @media (max-width: 768px) {
-            .image-gallery { height: 260px; }
-            .property-title { font-size: 22px; }
-            .property-price { font-size: 26px; }
-            .property-meta { flex-direction: column; gap: 15px; }
-            .seller-card { flex-direction: column; }
-            .contact-button { margin-left: 0; width: 100%; }
+            .detail-nav {
+                padding: 14px 18px !important;
+            }
+            .detail-nav .logo {
+                font-size: 14px !important;
+                letter-spacing: 2px !important;
+            }
+            .detail-nav .logo span {
+                font-size: 9px !important;
+            }
+            .detail-nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(180deg, #1a1a1a, #111);
+                flex-direction: column;
+                padding: 10px 20px 20px;
+                gap: 0;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+                z-index: 999;
+            }
+            .detail-nav-links.open {
+                display: flex;
+            }
+            .detail-nav-links a {
+                padding: 12px 0;
+                font-size: 14px;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+                color: #fff;
+                text-decoration: none;
+                letter-spacing: 0.5px;
+            }
+            .detail-hamburger {
+                display: flex !important;
+            }
+            .detail-profile-btn {
+                display: none !important;
+            }
+            .detail-mobile-profile {
+                display: block !important;
+            }
+        }
+
+        .detail-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 5px;
+        }
+        .detail-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+        }
+        .detail-mobile-profile {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .image-gallery {
+                height: 260px;
+            }
+
+            .property-title {
+                font-size: 22px;
+            }
+
+            .property-price {
+                font-size: 26px;
+            }
+
+            .property-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .seller-card {
+                flex-direction: column;
+            }
+
+            .contact-button {
+                margin-left: 0;
+                width: 100%;
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- HEADER (same as other pages) -->
-    <header class="navbar">
-        <div class="logo">BRD &amp; CO<br><span>REAL ESTATE</span></div>
-        <button class="hamburger" onclick="toggleNav()" aria-label="Toggle Menu">
+    <!-- HEADER – clean, responsive -->
+    <header class="navbar detail-nav" style="background: linear-gradient(135deg, #1a1a1a, #2a2a2a); position: fixed; top:0; left:0; right:0; z-index:1000; padding: 16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        <div class="logo" style="color:#fff; font-size:16px; letter-spacing:3px; font-weight:500; white-space:nowrap;">
+            BRD &amp; CO<br><span style="font-size:10px; opacity:0.7; letter-spacing:2px;">REAL ESTATE</span>
+        </div>
+
+        <!-- Hamburger (mobile only) -->
+        <button class="detail-hamburger" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Menu">
             <span></span><span></span><span></span>
         </button>
-        <nav id="mainNav">
-            <a href="{% url 'index1' %}">Home</a>
-            <a href="{% url 'buy' %}">Buy</a>
-            <a href="{% url 'sale' %}">Sales</a>
-            <a href="#">About Us</a>
-            <a href="#">Contact</a>
-            <a href="#">Media</a>
+
+        <!-- Nav links -->
+        <nav class="detail-nav-links" style="display:flex; align-items:center; gap:24px;">
+            <a href="{% url 'index1' %}" style="color:#fff; text-decoration:none; font-size:13px; letter-spacing:2px;">Home</a>
+            <a href="{% url 'buy' %}" style="background: rgba(201,162,77,0.15); color:#c9a24d; border:1px solid rgba(201,162,77,0.4); padding:7px 16px; border-radius:20px; text-decoration:none; font-size:13px; letter-spacing:1px;">← Listings</a>
             {% if user.is_authenticated %}
-            <!-- Desktop: dropdown button -->
-            <div class="profile-nav-wrap" style="position: relative;">
-                <button onclick="toggleProfileDropdown(event)"
-                    style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px;">
-                    👤 {{ user.username }}
-                </button>
-                <div id="profileDropdown"
-                    style="display: none; position: absolute; left: 0; top: 100%; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); min-width: 220px; z-index: 1000; margin-top: 5px;">
-                    <div style="padding: 12px 16px; border-bottom: 1px solid #eee; background: #f9f9f9; border-radius: 8px 8px 0 0;">
-                        <p style="margin: 0; font-weight: bold; color: #333; font-size: 14px;">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}</p>
-                        <p style="margin: 5px 0 0; font-size: 12px; color: #999;">{{ user.email }}</p>
+            <!-- Profile dropdown (desktop only) -->
+            <div class="profile-dropdown detail-profile-btn" style="position:relative;">
+                <button onclick="toggleProfileDropdown(event)" style="background:linear-gradient(135deg,#c9a24d,#e3c67a); color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer; font-size:13px; white-space:nowrap;">👤 {{ user.username }}</button>
+                <div id="profileDropdown" style="display:none; position:absolute; right:0; top:100%; background:white; border-radius:10px; box-shadow:0 12px 30px rgba(0,0,0,0.2); min-width:220px; z-index:1000; margin-top:8px;">
+                    <div style="padding:12px 16px; border-bottom:1px solid #eee; background:#f9f9f9; border-radius:10px 10px 0 0;">
+                        <p style="margin:0; font-weight:700; color:#333; font-size:14px;">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}</p>
+                        <p style="margin:4px 0 0; font-size:12px; color:#999;">{{ user.email }}</p>
                     </div>
-                    <a href="{% url 'profile' %}" style="display:block; padding:10px 16px; color:#333; text-decoration:none; font-size:14px;">📋 My Profile</a>
-                    <a href="{% url 'edit_profile' %}" style="display:block; padding:10px 16px; color:#333; text-decoration:none; font-size:14px;">✏️ Edit Profile</a>
-                    <a href="{% url 'sale' %}" style="display:block; padding:10px 16px; color:#333; text-decoration:none; font-size:14px;">🏠 Post Property</a>
-                    <a href="{% url 'logout' %}" style="display:block; padding:10px 16px; color:#ff6b6b; text-decoration:none; font-size:14px; border-top:1px solid #eee;">🚪 Logout</a>
+                    <a href="{% url 'profile' %}" style="display:block; padding:10px 16px; color:#333; text-decoration:none; font-size:13px;">📋 My Profile</a>
+                    <a href="{% url 'edit_profile' %}" style="display:block; padding:10px 16px; color:#333; text-decoration:none; font-size:13px;">✏️ Edit Profile</a>
+                    <a href="{% url 'sale' %}" style="display:block; padding:10px 16px; color:#333; text-decoration:none; font-size:13px;">🏠 Post Property</a>
+                    <a href="{% url 'logout' %}" style="display:block; padding:10px 16px; color:#ff6b6b; text-decoration:none; font-size:13px; border-top:1px solid #eee;">🚪 Logout</a>
                 </div>
             </div>
-            <!-- Mobile: inline logout only -->
-            <div class="mobile-profile-links">
-                <a href="{% url 'logout' %}" style="display:block; padding:10px 0; color:#ff6b6b; text-decoration:none; font-size:14px; border-top:1px solid rgba(255,255,255,0.1);">🚪 Logout</a>
-            </div>
             {% else %}
-            <a href="{% url 'login' %}?next={{ request.get_full_path }}" style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Login</a>
+            <a href="{% url 'login' %}?next={{ request.path }}" style="background:linear-gradient(135deg,#c9a24d,#e3c67a); color:white; padding:8px 18px; border-radius:20px; text-decoration:none; font-size:13px;">Login</a>
             {% endif %}
         </nav>
         <script>
-            function toggleNav() {
-                document.getElementById('mainNav').classList.toggle('open');
-            }
             function toggleProfileDropdown(event) {
                 event.stopPropagation();
                 const d = document.getElementById('profileDropdown');
@@ -366,11 +443,7 @@
             }
             document.addEventListener('click', function(e) {
                 const d = document.getElementById('profileDropdown');
-                if (d && !e.target.closest('.profile-nav-wrap')) d.style.display = 'none';
-                if (!e.target.closest('.navbar')) {
-                    const nav = document.getElementById('mainNav');
-                    if (nav) nav.classList.remove('open');
-                }
+                if (d && !e.target.closest('.profile-dropdown')) d.style.display = 'none';
             });
         </script>
     </header>
