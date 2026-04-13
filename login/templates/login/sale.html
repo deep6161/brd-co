@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post Property | BRD & CO</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -22,9 +23,9 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 120px 15px; /* Added horizontal padding for small screens */
+            padding: 100px 15px 60px;
         }
-        /* Navbar Styles from style.css */
+        /* Navbar Styles */
         .navbar {
             position: fixed;
             top: 0;
@@ -37,7 +38,7 @@
             padding: 15px 40px;
             background: linear-gradient(135deg, #1a1a1a, #333);
             border-radius: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         .navbar .logo {
             font-size: 24px;
@@ -61,17 +62,53 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 400;
-            margin-left: 35px;
+            margin-left: 25px;
             transition: 0.3s;
         }
         .navbar nav a:hover {
             color: #c9a44d;
         }
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+            background: none;
+            border: none;
+            margin-top: 0;
+            width: auto;
+            box-shadow: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
         @media (max-width: 768px) {
-            .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; }
-            .navbar nav { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
-            .navbar nav a { margin-left: 10px; margin-right: 10px; font-size: 12px; }
-            body { padding-top: 140px; } /* Space for navbar */
+            .navbar { padding: 14px 20px; }
+            .hamburger { display: flex; }
+            .navbar nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px 20px;
+                gap: 5px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            }
+            .navbar nav.open { display: flex; }
+            .navbar nav a { margin-left: 0; padding: 8px 0; font-size: 14px; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.08); }
+            .navbar nav a:last-child { border-bottom: none; }
+            body { padding-top: 70px; }
         }
 
         /* FIELD + LABEL */
@@ -956,9 +993,12 @@
     </div>
     {% endif %}
     <!-- Navigation Header -->
-    <header class="navbar" style="position: relative; z-index: 1000; width: 100%;">
+    <header class="navbar">
         <div class="logo">BRD & CO<br><span>REAL ESTATE</span></div>
-        <nav>
+        <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="mainNav">
             <a href="{% url 'index1' %}">Home</a>
             <a href="{% url 'buy' %}">Buy</a>
             <a href="{% url 'sale' %}">Sales</a>
@@ -1026,7 +1066,7 @@
         <!-- SELLER PHONE -->
         <div class="field reveal">
             <label>Phone Number(optional)</label>
-            <input type="tel" id="phone" name="seller_phone" required>
+            <input type="tel" id="phone" name="seller_phone" placeholder="e.g. +91 98765 43210">
         </div>
 
         <div class="field reveal">
@@ -1094,11 +1134,8 @@
 
 
 
-        <!-- new button -->
-
-        </form>
-
-        <div class="demo">
+        <!-- SUBMIT BUTTON (inside form) -->
+        <div class="demo" id="demoBtn">
             <div class="demo__drone-cont demo__drone-cont--takeoff">
                 <div class="demo__drone-cont demo__drone-cont--shift-x">
                     <div class="demo__drone-cont demo__drone-cont--landing">
@@ -1131,20 +1168,23 @@
       </svg>
             </div>
             <div class="demo__text-fields">
-                <div class="demo__text demo__text--step-0">Checkout</div>
+                <div class="demo__text demo__text--step-0">Submit Property</div>
                 <div class="demo__text demo__text--step-1">
                     Processing
                     <span class="demo__text-dots"><span>.</span></span>
                 </div>
                 <div class="demo__text demo__text--step-2">
-                    Delivering
+                    Uploading
                     <span class="demo__text-dots"><span>.</span></span>
                 </div>
-                <div class="demo__text demo__text--step-3">It's on the way</div>
-                <div class="demo__text demo__text--step-4">Delivered</div>
+                <div class="demo__text demo__text--step-3">Almost Done</div>
+                <div class="demo__text demo__text--step-4">Posted! ✓</div>
             </div>
             <div class="demo__revert-line"></div>
         </div>
+
+        </form>
+
     </div>
 
     <div id="successToast" class="success-toast">
@@ -1153,6 +1193,10 @@
 
 
     <script>
+        /* ================= HAMBURGER MENU ================= */
+        function toggleNav() {
+            document.getElementById('mainNav').classList.toggle('open');
+        }
         /* ================= SCROLL REVEAL ================= */
         const reveals = document.querySelectorAll(".reveal");
 
@@ -1272,7 +1316,7 @@
         }
 
 
-        const demoBtn = document.querySelector(".demo");
+        const demoBtn = document.getElementById("demoBtn");
         let processing = false;
 
         demoBtn.addEventListener("click", function() {

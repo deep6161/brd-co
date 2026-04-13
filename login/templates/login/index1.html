@@ -16,8 +16,10 @@
     <!-- HEADER -->
     <header class="navbar">
         <div class="logo">REAL ESTATE<br><span>B R D & co</span></div>
-
-        <nav>
+        <button class="hamburger" onclick="toggleNav()" aria-label="Toggle Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="mainNav">
             <a href="{% url 'buy' %}">Buy</a>
             <a href="{% url 'sale' %}">Sales</a>
             <a href="#">About Us</a>
@@ -265,6 +267,14 @@
 
     <!-- GEOLOCATION SCRIPT -->
     <script>
+        function toggleNav() {
+            document.getElementById('mainNav').classList.toggle('open');
+        }
+        document.addEventListener('click', function(e) {
+            const nav = document.getElementById('mainNav');
+            if (nav && !e.target.closest('.navbar')) nav.classList.remove('open');
+        });
+
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(success, error);
         }
