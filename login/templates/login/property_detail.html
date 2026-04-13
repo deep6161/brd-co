@@ -417,7 +417,7 @@
             <a href="{% url 'index1' %}" style="color:#fff; text-decoration:none; font-size:13px; letter-spacing:2px;">Home</a>
             <a href="{% url 'buy' %}" style="background: rgba(201,162,77,0.15); color:#c9a24d; border:1px solid rgba(201,162,77,0.4); padding:7px 16px; border-radius:20px; text-decoration:none; font-size:13px; letter-spacing:1px;">← Listings</a>
             {% if user.is_authenticated %}
-            <!-- Desktop dropdown -->
+            <!-- Profile dropdown (desktop only) -->
             <div class="profile-dropdown detail-profile-btn" style="position:relative;">
                 <button onclick="toggleProfileDropdown(event)" style="background:linear-gradient(135deg,#c9a24d,#e3c67a); color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer; font-size:13px; white-space:nowrap;">👤 {{ user.username }}</button>
                 <div id="profileDropdown" style="display:none; position:absolute; right:0; top:100%; background:white; border-radius:10px; box-shadow:0 12px 30px rgba(0,0,0,0.2); min-width:220px; z-index:1000; margin-top:8px;">
@@ -430,14 +430,6 @@
                     <a href="{% url 'sale' %}" style="display:block; padding:10px 16px; color:#333; text-decoration:none; font-size:13px;">🏠 Post Property</a>
                     <a href="{% url 'logout' %}" style="display:block; padding:10px 16px; color:#ff6b6b; text-decoration:none; font-size:13px; border-top:1px solid #eee;">🚪 Logout</a>
                 </div>
-            </div>
-            <!-- Mobile profile inline -->
-            <div class="detail-mobile-profile" style="border-top:1px solid rgba(255,255,255,0.1); padding-top:4px; width:100%;">
-                <span style="display:block; padding:10px 0; color:#c9a24d; font-weight:600;">👤 {{ user.username }}</span>
-                <a href="{% url 'profile' %}" style="display:block; padding:10px 0; color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.08);">📋 My Profile</a>
-                <a href="{% url 'edit_profile' %}" style="display:block; padding:10px 0; color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.08);">✏️ Edit Profile</a>
-                <a href="{% url 'sale' %}" style="display:block; padding:10px 0; color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.08);">🏠 Post Property</a>
-                <a href="{% url 'logout' %}" style="display:block; padding:10px 0; color:#ff6b6b; text-decoration:none;">🚪 Logout</a>
             </div>
             {% else %}
             <a href="{% url 'login' %}?next={{ request.path }}" style="background:linear-gradient(135deg,#c9a24d,#e3c67a); color:white; padding:8px 18px; border-radius:20px; text-decoration:none; font-size:13px;">Login</a>
