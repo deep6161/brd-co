@@ -75,7 +75,7 @@ def index1(request):
 def sale(request):
     """Display property posting page - requires login"""
     if request.method == 'POST':
-        form = PropertyForm(request.POST)
+        form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
             property_obj = form.save(commit=False)
             property_obj.seller = request.user
@@ -83,12 +83,21 @@ def sale(request):
             property_obj.save()
             
             # Handle multiple image uploads
+            # Wrapped in try/except because Render has an ephemeral filesystem
+            # and file writes may fail — we don't want to crash the whole view
+            # after the property is already successfully saved to the database.
             if 'images' in request.FILES:
                 for image in request.FILES.getlist('images'):
-                    PropertyImage.objects.create(property=property_obj, image=image)
+                    try:
+                        PropertyImage.objects.create(property=property_obj, image=image)
+                    except Exception:
+                        # Image upload failed (e.g. ephemeral disk on Render)
+                        # Property is already saved, so we just skip the image.
+                        pass
             
             messages.success(request, f'Property posted successfully! 🎉 Your {property_obj.get_property_type_display()} in {property_obj.location} is now live.')
-            return redirect('property_detail', property_id=property_obj.id)
+            # Always redirect after POST (PRG pattern) — prevents browser re-submission
+            return redirect('profile')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
