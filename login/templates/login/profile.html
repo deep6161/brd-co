@@ -111,7 +111,8 @@
         .property-card {
             background: white;
             border-radius: 12px;
-            overflow: hidden;
+            height: auto !important;          /* override style.css fixed 340px */
+            overflow: visible !important;     /* don't clip the details + buttons */
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
             cursor: pointer;
@@ -119,6 +120,11 @@
         .property-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(201, 162, 77, 0.25);
+        }
+        /* Reset pseudo-elements from style.css that add dark overlays */
+        .property-card::after,
+        .property-card::before {
+            display: none !important;
         }
         .property-image {
             width: 100%;
