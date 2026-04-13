@@ -35,10 +35,8 @@
                     {{ user.username }}</button>
                 <div id="profileDropdown"
                     style="display: none; position: absolute; right: 0; top: 100%; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); min-width: 220px; z-index: 1000; margin-top: 5px;">
-                    <div
-                        style="padding: 12px 16px; border-bottom: 1px solid #eee; background: #f9f9f9; border-radius: 8px 8px 0 0;">
-                        <p style="margin: 0; font-weight: bold; color: #333; font-size: 14px;">{{
-                            user.first_name|default:user.username }}</p>
+                    <div style="padding: 12px 16px; border-bottom: 1px solid #eee; background: #f9f9f9; border-radius: 8px 8px 0 0;">
+                        <p style="margin: 0; font-weight: bold; color: #333; font-size: 14px;">{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</p>
                         <p style="margin: 5px 0 0 0; font-size: 12px; color: #999;">{{ user.email }}</p>
                     </div>
                     <a href="{% url 'profile' %}"

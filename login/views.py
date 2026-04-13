@@ -201,9 +201,16 @@ def edit_profile_view(request):
 
 
 def property_detail_view(request, property_id):
-    """Display detailed view of a single property"""
+    """Display detailed view of a single property.
+    The property owner can always view it; others only see available ones.
+    """
     try:
-        property_obj = Property.objects.get(id=property_id, is_available=True)
+        property_obj = Property.objects.get(id=property_id)
+        # Non-owners can only see available properties
+        if not property_obj.is_available:
+            if not request.user.is_authenticated or request.user != property_obj.seller:
+                messages.error(request, 'Property not found or no longer available.')
+                return redirect('buy')
     except Property.DoesNotExist:
         messages.error(request, 'Property not found or no longer available.')
         return redirect('buy')
