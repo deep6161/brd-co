@@ -96,31 +96,24 @@
             <a href="{% url 'property_detail' property.id %}" style="text-decoration: none; color: inherit; display: block;">
                 <div class="property-card"
                      {% if property.images.first %}
-                     style="background-image:url('{% url 'property_image' property.images.first.id %}')"
+                     style="background-image:url('{% url 'property_image' property.images.first.id %}'); background-size:cover; background-position:center;"
                      {% else %}
                      style="background-color: #c9a24d; display: flex; align-items: center; justify-content: center;"
                      {% endif %}>
 
                     {% if not property.images.first %}
-                    <div
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem;">
                         {% if property.property_type == 'apartment' %}🏢
                         {% elif property.property_type == 'villa' %}🏡
                         {% else %}📍{% endif %}
                     </div>
                     {% endif %}
 
-                    <span class="tag"
-                        style="position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.95); padding: 8px 16px; border-radius: 20px; font-weight: 600; color: #2f3e4f; z-index: 3; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">{{
-                        property.get_property_type_display }}</span>
+                    <span class="tag" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.95); padding: 8px 16px; border-radius: 20px; font-weight: 600; color: #2f3e4f; z-index: 3; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">{{ property.get_property_type_display }}</span>
                     <div class="property-info">
-                        <h3 style="font-size: 24px; font-weight: 600; text-shadow: 1px 1px 4px rgba(0,0,0,0.9);">{{
-                            property.location|truncatechars:25 }} · {{ property.bedrooms }} BHK</h3>
-                        <p class="price"
-                            style="font-size: 20px; color: #c9a44d; font-weight: bold; margin: 8px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
-                            INR {{ property.price|floatformat:0 }}</p>
-                        <p class="details"
-                            style="font-size: 14px; color: #f0f0f0; letter-spacing: 0.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
+                        <h3 style="font-size: 24px; font-weight: 600; text-shadow: 1px 1px 4px rgba(0,0,0,0.9);">{{ property.location|truncatechars:25 }} · {{ property.bedrooms }} BHK</h3>
+                        <p class="price" style="font-size: 20px; color: #c9a44d; font-weight: bold; margin: 8px 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">INR {{ property.price|floatformat:0 }}</p>
+                        <p class="details" style="font-size: 14px; color: #f0f0f0; letter-spacing: 0.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
                             <i class="fas fa-bed"></i> {{ property.bedrooms }} Bedrooms &nbsp;|&nbsp;
                             <i class="fas fa-bath"></i> {{ property.bathrooms }} Bathrooms
                         </p>

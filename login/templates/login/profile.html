@@ -307,23 +307,27 @@
             {% if properties %}
             <div class="property-list">
                 {% for property in properties %}
-                <a href="{% url 'property_detail' property.id %}">
                 <div class="property-card">
+                    <!-- Property Image -->
                     <div class="property-image">
-                        {% if property.property_type == 'apartment' %}
-                        🏢
-                        {% elif property.property_type == 'villa' %}
-                        🏡
+                        {% if property.images.first %}
+                        <img src="{% url 'property_image' property.images.first.id %}"
+                             alt="{{ property.location }}"
+                             style="width:100%; height:100%; object-fit:cover; display:block;">
                         {% else %}
-                        📍
+                            {% if property.property_type == 'apartment' %}🏢
+                            {% elif property.property_type == 'villa' %}🏡
+                            {% else %}📍{% endif %}
                         {% endif %}
                     </div>
+
+                    <!-- Property Details -->
                     <div class="property-details">
                         <span class="property-type">{{ property.get_property_type_display }}</span>
                         <div class="property-location">{{ property.location }}</div>
                         <div class="property-price">₹{{ property.price|floatformat:0 }}</div>
                         <div class="property-beds-baths">
-                            <i class="fas fa-bed"></i> {{ property.bedrooms }} BHK | 
+                            <i class="fas fa-bed"></i> {{ property.bedrooms }} BHK |
                             <i class="fas fa-bath"></i> {{ property.bathrooms }} Bath
                         </div>
                         <p style="color: #666; font-size: 13px; margin: 10px 0;">
@@ -332,9 +336,25 @@
                         <span class="property-status {% if property.is_available %}status-active{% else %}status-inactive{% endif %}">
                             {% if property.is_available %}✓ Available{% else %}✗ Sold{% endif %}
                         </span>
+
+                        <!-- Action Buttons -->
+                        <div style="display: flex; gap: 10px; margin-top: 14px;">
+                            <a href="{% url 'property_detail' property.id %}"
+                               style="flex:1; text-align:center; padding: 8px 0; background: #f0f0f0; color: #333; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600;">
+                               👁 View
+                            </a>
+                            <form method="POST" action="{% url 'delete_property' property.id %}"
+                                  style="flex:1;"
+                                  onsubmit="return confirm('Are you sure you want to delete this property? This cannot be undone.');">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        style="width:100%; padding: 8px 0; background: #ff6b6b; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                                    🗑 Delete
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                </a>
                 {% endfor %}
             </div>
             {% else %}

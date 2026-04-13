@@ -207,13 +207,22 @@ def property_detail_view(request, property_id):
     except Property.DoesNotExist:
         messages.error(request, 'Property not found or no longer available.')
         return redirect('buy')
-    
-    # Get property images
+
     images = property_obj.images.all()
-    
+
     context = {
         'property': property_obj,
         'images': images,
         'seller': property_obj.seller,
     }
     return render(request, 'login/property_detail.html', context)
+
+
+@login_required(login_url='login')
+def delete_property(request, property_id):
+    """Delete a property listing — only the owner can do this."""
+    property_obj = get_object_or_404(Property, id=property_id, seller=request.user)
+    if request.method == 'POST':
+        property_obj.delete()
+        messages.success(request, 'Property deleted successfully.')
+    return redirect('profile')

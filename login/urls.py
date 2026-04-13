@@ -12,4 +12,5 @@ urlpatterns = [
     path("edit-profile/", views.edit_profile_view, name="edit_profile"),
     path("property/<int:property_id>/", views.property_detail_view, name="property_detail"),
     path("image/<int:image_id>/", views.serve_property_image, name="property_image"),
+    path("property/<int:property_id>/delete/", views.delete_property, name="delete_property"),
 ]
