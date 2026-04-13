@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -81,32 +82,35 @@ def sale(request):
             property_obj.seller = request.user
             property_obj.is_available = True
             property_obj.save()
-            
-            # Handle multiple image uploads
-            # Wrapped in try/except because Render has an ephemeral filesystem
-            # and file writes may fail — we don't want to crash the whole view
-            # after the property is already successfully saved to the database.
+
+            # Save image bytes directly into PostgreSQL—persists across Render restarts
             if 'images' in request.FILES:
-                for image in request.FILES.getlist('images'):
+                for image_file in request.FILES.getlist('images'):
                     try:
-                        PropertyImage.objects.create(property=property_obj, image=image)
+                        PropertyImage.objects.create(
+                            property=property_obj,
+                            image_data=image_file.read(),
+                            content_type=image_file.content_type or 'image/jpeg',
+                        )
                     except Exception:
-                        # Image upload failed (e.g. ephemeral disk on Render)
-                        # Property is already saved, so we just skip the image.
-                        pass
-            
+                        pass  # skip on failure; property is already saved
+
             messages.success(request, f'Property posted successfully! 🎉 Your {property_obj.get_property_type_display()} in {property_obj.location} is now live.')
-            # Always redirect after POST (PRG pattern) — prevents browser re-submission
-            return redirect('profile')
+            return redirect('profile')  # PRG pattern—prevents double submit
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f'{field}: {error}')
     else:
         form = PropertyForm()
-    
+
     return render(request, 'login/sale.html', {'user': request.user, 'form': form})
 
+
+def serve_property_image(request, image_id):
+    """Serve a property image from bytes stored in the database."""
+    img = get_object_or_404(PropertyImage, id=image_id)
+    return HttpResponse(bytes(img.image_data), content_type=img.content_type)
 
 
 def buy(request):

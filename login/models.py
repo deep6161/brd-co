@@ -53,10 +53,13 @@ class Property(models.Model):
 
 
 class PropertyImage(models.Model):
-    """Model to store multiple images for each property"""
+    """Model to store multiple images for each property.
+    Stores raw bytes in PostgreSQL so images persist across Render restarts.
+    """
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='properties/%Y/%m/%d/')
+    image_data = models.BinaryField()
+    content_type = models.CharField(max_length=50, default='image/jpeg')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         return f"Image for {self.property}"

@@ -368,7 +368,7 @@
             <div class="image-gallery">
                 {% if images %}
                     {% for image in images %}
-                        <img id="mainImage" src="{{ image.image.url }}" alt="Property image" {% if forloop.first %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+                        <img id="mainImage" src="{% url 'property_image' image.id %}" alt="Property image" {% if forloop.first %}style="display:block;"{% else %}style="display:none;"{% endif %}>
                     {% endfor %}
                 {% else %}
                     <div style="font-size: 64px;">
@@ -504,7 +504,7 @@
     <script>
         const images = [
             {% for image in images %}
-            "{{ image.image.url }}"{% if not forloop.last %},{% endif %}
+            "{% url 'property_image' image.id %}"{% if not forloop.last %},{% endif %}
             {% endfor %}
         ];
 
