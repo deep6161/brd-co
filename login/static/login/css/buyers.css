@@ -375,15 +375,7 @@ nav a:hover::after {
    RESPONSIVE
 ================================ */
 
-@media(max-width:1000px) {
-    .filters-box {
-        grid-template-columns: 1fr;
-    }
-    .hero-content {
-        left: 40px;
-        right: 40px;
-    }
-}
+/* placeholder – full responsive below */
 
 
 /* SECTION */
@@ -748,32 +740,269 @@ nav a:hover::after {
    ADDITIONAL RESPONSIVE SETUP
 ================================ */
 
-@media (max-width: 1024px) {
-    .filters-box { grid-template-columns: 1fr 1fr; }
-    .search-box button, .filters-box .reset-btn { grid-column: span 1; }
+/* ===============================
+   HAMBURGER MENU – BUY PAGE
+================================ */
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 5px;
+    z-index: 1001;
 }
 
-@media (max-width: 768px) {
-    .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; text-align: center; }
-    .navbar nav { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
-    nav a { margin-left: 10px; margin-right: 10px; font-size: 12px; }
-    
-    .hero { height: auto; padding: 100px 20px 40px; }
-    .hero-content { position: relative; left: 0; bottom: 0; text-align: center; }
-    .hero-content h1 { font-size: 26px; letter-spacing: 2px; }
-    
-    .filters-section { padding: 40px 20px; }
-    .filters-section h2 { font-size: 22px; }
-    .filters-box { grid-template-columns: 1fr; padding: 20px; }
-    .filters-box input, .filters-box select { padding: 15px; }
-    .filters-box button { width: 100%; margin: 10px 0 0 0 !important; }
-    
-    .category-section { padding: 40px 20px; }
-    .section-head h2 { font-size: 24px; }
-    .slider { gap: 20px; }
-    .card { min-width: 280px; height: 380px; padding: 20px; }
-    .card h3 { font-size: 22px; }
-    .nav-btn { width: 40px; height: 40px; font-size: 20px; }
-    
-    .properties-section { margin: 40px auto; }
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+/* ===============================
+   TABLET – 1024px
+================================ */
+
+@media (max-width: 1024px) {
+    .filters-box { grid-template-columns: 1fr 1fr; }
+    .filters-box .reset-btn { grid-column: span 1; }
+}
+
+/* ===============================
+   MOBILE – 900px
+================================ */
+
+@media (max-width: 900px) {
+
+    /* ---- NAVBAR ---- */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(180deg, #1e1e1e, #161616);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px 20px;
+        gap: 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        z-index: 999;
+    }
+
+    nav.open {
+        display: flex;
+    }
+
+    nav a {
+        margin-left: 0;
+        padding: 12px 0;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        width: 100%;
+        letter-spacing: 1px;
+    }
+
+    /* Profile button full-width on mobile */
+    nav > div > button {
+        width: 100%;
+        text-align: left;
+        border-radius: 8px !important;
+        margin: 8px 0;
+        padding: 12px 16px !important;
+    }
+
+    /* ---- BODY OFFSET for fixed navbar ---- */
+    body {
+        padding-top: 62px;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+        height: 55vh;
+        min-height: 280px;
+    }
+
+    .hero-content {
+        left: 20px;
+        right: 20px;
+        bottom: 30px;
+    }
+
+    .hero-content h1 {
+        font-size: 22px;
+        letter-spacing: 2px;
+    }
+
+    .hero-content p {
+        font-size: 13px;
+    }
+
+    /* ---- FILTER SECTION ---- */
+    .filters-section {
+        padding: 30px 16px;
+    }
+
+    .filters-section h2 {
+        font-size: 18px;
+        letter-spacing: 3px;
+    }
+
+    .sub-text {
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    /* Force single column always on mobile */
+    .filters-box {
+        grid-template-columns: 1fr !important;
+        padding: 20px 16px;
+        gap: 14px;
+        border-radius: 16px;
+    }
+
+    .filters-box input,
+    .filters-box select {
+        padding: 14px 18px;
+        font-size: 13px;
+        width: 100%;
+    }
+
+    /* Both buttons full width */
+    .filters-box .reset-btn {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 16px !important;
+        grid-column: 1 !important;
+    }
+
+    /* ---- CATEGORY SECTION ---- */
+    .category-section {
+        padding: 40px 16px;
+    }
+
+    .section-head h2 {
+        font-size: 22px;
+    }
+
+    .slider-wrapper {
+        margin-top: 30px;
+    }
+
+    /* Mobile: natural horizontal scroll with snap */
+    .slider {
+        gap: 16px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 12px;
+        padding-left: 4px;
+    }
+
+    .slider::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .slider::-webkit-scrollbar-thumb {
+        background: #c9a24d;
+        border-radius: 2px;
+    }
+
+    /* Cards take ~85% width so next card peeks */
+    .card {
+        min-width: 80vw !important;
+        height: 300px !important;
+        padding: 20px !important;
+        transform: scale(1) !important;
+        opacity: 1 !important;
+        scroll-snap-align: center;
+        flex-shrink: 0;
+    }
+
+    .card h3 {
+        font-size: 20px !important;
+    }
+
+    .card span {
+        font-size: 13px;
+    }
+
+    /* Hide JS nav buttons on mobile – use scroll */
+    .nav-btn {
+        display: none;
+    }
+
+    /* ---- PROPERTIES SECTION ---- */
+    .properties-section {
+        margin: 30px auto;
+        padding: 0 16px;
+    }
+
+    .properties-section > h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .properties-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* ---- FOOTER ---- */
+    .luxury-footer {
+        padding: 40px 16px 20px;
+    }
+
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+}
+
+/* ===============================
+   SMALL MOBILE – 480px
+================================ */
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 18px;
+        letter-spacing: 1px;
+    }
+
+    .card {
+        min-width: 88vw !important;
+        height: 260px !important;
+    }
+
+    .filters-section h2 {
+        font-size: 16px;
+        letter-spacing: 2px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
 }

@@ -22,7 +22,11 @@
     <header class="navbar">
         <div class="logo">BRD & CO<br><span>REAL ESTATE</span></div>
 
-        <nav>
+        <button class="hamburger" onclick="toggleNav()" aria-label="Toggle Menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav id="mainNav">
             <a href="{% url 'index1' %}">Home</a>
             <a href="{% url 'sale' %}">Sales</a>
             <a href="#">About Us</a>
@@ -57,19 +61,6 @@
                         onmouseout="this.style.backgroundColor='transparent'">🚪 Logout</a>
                 </div>
             </div>
-            <script>
-                function toggleProfileDropdown(event) {
-                    event.preventDefault();
-                    const dropdown = document.getElementById('profileDropdown');
-                    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-                }
-                document.addEventListener('click', function (event) {
-                    const dropdown = document.getElementById('profileDropdown');
-                    if (!event.target.closest('button') && !event.target.closest('#profileDropdown')) {
-                        dropdown.style.display = 'none';
-                    }
-                });
-            </script>
             {% else %}
             <a href="{% url 'login' %}?next={{ request.path }}" style="background: linear-gradient(135deg, #c9a24d, #e3c67a); color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Login</a>
             <a href="{% url 'register' %}?next={{ request.path }}" style="background: #333; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none;">Register</a>
@@ -304,7 +295,32 @@
         </div>
     </footer>
 
-    <!-- JS -->
+    <script>
+        // Hamburger toggle for mobile
+        function toggleNav() {
+            document.getElementById('mainNav').classList.toggle('open');
+        }
+        document.addEventListener('click', function (e) {
+            const nav = document.getElementById('mainNav');
+            if (nav && !e.target.closest('.navbar')) nav.classList.remove('open');
+        });
+
+        // Dropdown profile toggle
+        function toggleProfileDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+        document.addEventListener('click', function (event) {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown && !event.target.closest('button') && !event.target.closest('#profileDropdown')) {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
+
+    <!-- Map + Filter JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const mapProperties = [
