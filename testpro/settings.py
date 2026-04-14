@@ -154,3 +154,10 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# ---------- SESSION SETTINGS ----------
+# 1 hour expressed in seconds (60 secs * 60 mins)
+SESSION_COOKIE_AGE = 3600
+
+# Optional: Reset the 1-hour timer every time the user performs an action
+SESSION_SAVE_EVERY_REQUEST = True
