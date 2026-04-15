@@ -88,6 +88,9 @@
             color: white;
             font-size: 64px;
             overflow: hidden;
+            touch-action: pan-y;
+            user-select: none;
+            cursor: grab;
         }
 
         .image-gallery img {
@@ -600,22 +603,50 @@
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         }
 
+        let currentImageIndex = 0;
+
         function showImage(index) {
-            if (images.length > 0) {
-                const gallerytems = document.querySelectorAll('.image-gallery img');
-                const dots = document.querySelectorAll('.gallery-dot');
-                
-                gallerytems.forEach(img => img.style.display = 'none');
-                dots.forEach(dot => dot.classList.remove('active'));
-                
-                if (gallerytems[index]) {
-                    gallerytems[index].style.display = 'block';
-                }
-                if (dots[index]) {
-                    dots[index].classList.add('active');
-                }
-            }
+            const galleryItems = document.querySelectorAll('.image-gallery img');
+            const dots = document.querySelectorAll('.gallery-dot');
+            if (!galleryItems.length) return;
+            // Wrap around
+            index = (index + galleryItems.length) % galleryItems.length;
+            currentImageIndex = index;
+            galleryItems.forEach(img => img.style.display = 'none');
+            dots.forEach(dot => dot.classList.remove('active'));
+            if (galleryItems[index]) galleryItems[index].style.display = 'block';
+            if (dots[index]) dots[index].classList.add('active');
         }
+
+        // --- Touch / Swipe support ---
+        (function () {
+            const gallery = document.querySelector('.image-gallery');
+            if (!gallery) return;
+            let startX = 0;
+            let startY = 0;
+            let isDragging = false;
+
+            gallery.addEventListener('touchstart', function (e) {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isDragging = true;
+            }, { passive: true });
+
+            gallery.addEventListener('touchend', function (e) {
+                if (!isDragging) return;
+                isDragging = false;
+                const dx = e.changedTouches[0].clientX - startX;
+                const dy = e.changedTouches[0].clientY - startY;
+                // Only trigger if horizontal swipe is dominant and > 50px
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+                    if (dx < 0) {
+                        showImage(currentImageIndex + 1); // swipe left → next
+                    } else {
+                        showImage(currentImageIndex - 1); // swipe right → prev
+                    }
+                }
+            }, { passive: true });
+        })();
 
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('profileDropdown');
